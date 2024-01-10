@@ -9,7 +9,7 @@
   "printWidth": 80,
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "endOfLine": "lf",
+  "endOfLine": "crlf",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
   "singleAttributePerLine": false,

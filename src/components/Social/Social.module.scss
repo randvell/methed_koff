@@ -1,0 +1,10 @@
+.social {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 8px;
+
+  .social__item {
+    width: 16px;
+    height: 16px;
+  }
+}
