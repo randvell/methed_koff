@@ -1,8 +1,21 @@
 .footer {
-  background: var(--, #1c1c1c);
+  background: #1c1c1c;
+  color: #f1e9e4;
 }
 
 .container {
   display: grid;
   gap: 24px;
+}
+
+.logo {
+  .logo__name {
+    width: 130px;
+    height: 50px;
+  }
+
+  .logo__icon {
+    width: 69px;
+    height: 52px;
+  }
 }

@@ -1,6 +1,5 @@
 .social {
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
   gap: 8px;
 
   .social__item {

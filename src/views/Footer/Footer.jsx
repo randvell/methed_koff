@@ -6,7 +6,7 @@ import { Container } from "../Container/Container";
 import s from "./Footer.module.scss";
 
 export const Footer = () => (
-  <footer>
+  <footer className={s.footer}>
     <Container className={s.container}>
       <Logo />
       <Contacts />
