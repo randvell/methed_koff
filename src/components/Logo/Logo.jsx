@@ -1,8 +1,7 @@
 import s from "./Logo.module.scss";
 
 export const Logo = (props) => (
-  <div className={`${s.logo} ${props.className ? props.className : ""}`}>
-    <img className="logo__icon" src="/icons/logo_icon.svg"></img>
-    <img className="logo__name" src="/icons/logo.svg"></img>
-  </div>
+  <a href="/" alt="Логотип мебельного магазина Koff" className={s.logo}>
+    <img className={s.logo__icon} src="/icons/logo.svg"></img>
+  </a>
 );

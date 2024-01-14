@@ -1,6 +1,5 @@
-import { Author } from "../../components/Author/Author";
+import { Developers } from "../../components/Developers/Developers";
 import { Contacts } from "../../components/Contacts/Contacts";
-import { Copyright } from "../../components/Copyright/Copyright";
 import { Logo } from "../../components/Logo/Logo";
 import { Container } from "../Container/Container";
 import s from "./Footer.module.scss";
@@ -8,10 +7,19 @@ import s from "./Footer.module.scss";
 export const Footer = () => (
   <footer className={s.footer}>
     <Container className={s.container}>
-      <Logo />
-      <Contacts />
-      <Author />
-      <Copyright />
+      <div className={s.logo}>
+        <Logo />
+      </div>
+
+      <div className={s.contacts}>
+        <Contacts />
+      </div>
+
+      <div className={s.developers}>
+        <Developers />
+      </div>
+
+      <p className={s.copyright}>© Koff, 2024</p>
     </Container>
   </footer>
 );

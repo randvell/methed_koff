@@ -1,5 +1,5 @@
 import { Social } from "../Social/Social";
-import { Phone } from "./Phone/Phone";
+import { Phone } from "../Phone/Phone";
 import s from "./Contacts.module.scss";
 
 export const Contacts = () => (

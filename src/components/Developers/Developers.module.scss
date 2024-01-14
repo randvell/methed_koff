@@ -1,11 +1,7 @@
-.list {
+.developers {
   display: flex;
   gap: 8px;
-}
-
-.item {
-  width: 16px;
-  height: 16px;
+  flex-direction: column;
 }
 
 .link {

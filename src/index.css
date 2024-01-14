@@ -38,8 +38,6 @@ html {
 
 body {
   position: relative;
-  min-width: 320px;
-  min-height: 100vh;
   font-family: "Open Sans", sans-serif;
   color: #1c1c1c;
   font-size: 12px;
@@ -49,10 +47,26 @@ body {
   background-color: #fff;
 }
 
-img {
+#root {
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+img,
+svg {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+svg {
+  max-height: 100%;
 }
 
 button {
@@ -86,3 +100,4 @@ fieldset {
   position: fixed;
   transform: scale(0);
 }
+

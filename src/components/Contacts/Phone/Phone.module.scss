@@ -1,9 +1,0 @@
-.contacts__phone {
-  display: flex;
-  gap: 4px;
-  color: #fff;
-}
-
-.contacts__phone::before {
-  content: url("/icons/phone.svg");
-}
