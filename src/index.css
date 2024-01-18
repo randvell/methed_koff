@@ -101,3 +101,11 @@ fieldset {
   transform: scale(0);
 }
 
+main {
+  padding-bottom: 80px;
+
+  @media (min-width: 820px) {
+    padding-bottom: 100px;
+  }
+}
+
