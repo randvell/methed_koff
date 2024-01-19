@@ -12,6 +12,13 @@ export const fetchProduct = createAsyncThunk(
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        return thunkApi.rejectWithValue({
+          status: response.status,
+          error: "Не удалось получить товар!",
+        });
+      }
+
       throw new Error("Не удалось загрузить товар");
     }
 
@@ -20,7 +27,7 @@ export const fetchProduct = createAsyncThunk(
 );
 
 const initialState = {
-  data: [],
+  data: null,
   loading: false,
   error: null,
 };
