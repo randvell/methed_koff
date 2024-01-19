@@ -8,6 +8,7 @@ import { Footer } from "./views/Footer/Footer";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Catalog } from "./views/Catalog/Catalog";
 import { Card } from "./components/Card/Card";
+import { Container } from "./views/Container/Container";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/404",
-    element: <></>,
+    element: (
+      <>
+        <Header />
+        <main>
+          <Container>
+            <h1>Эта страница не существует</h1>
+          </Container>
+        </main>
+        <Footer />
+      </>
+    ),
   },
   {
     path: "/product/:productId",

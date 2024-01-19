@@ -25,15 +25,15 @@ export const Card = () => {
     dispatch(fetchProduct(productId));
   }, [dispatch, productId]);
 
-  if (loading) {
-    return <div>Загрузка...</div>;
-  }
-  if (error) {
-    return <div>Ошибка: {error}</div>;
-  }
-  if (!data || !data.length) {
-    return <div>No data</div>;
-  }
+  // if (loading) {
+  //   return <div>Загрузка...</div>;
+  // }
+  // if (error) {
+  //   return <div>Ошибка: {error}</div>;
+  // }
+  // if (!data || !data.length) {
+  //   return <div>No data</div>;
+  // }
 
   console.log("Data" + data);
 
@@ -48,7 +48,7 @@ export const Card = () => {
               thumbs={{ swiper: thumbSwiper }}
               onSwiper={setMainSwiper}
               spaceBetween={10}>
-              {images.map((item, i) => (
+              {images?.map((item, i) => (
                 <SwiperSlide key={`swiper_main_${i}`}>
                   <img src={`${API_URL}/${item}`} alt={name} />
                 </SwiperSlide>
@@ -66,7 +66,7 @@ export const Card = () => {
               spaceBetween={14}
               slidesPerView={4}
               freeMode>
-              {images.map((item, i) => (
+              {images?.map((item, i) => (
                 <SwiperSlide key={`swiper_thumb_${i}`}>
                   <img src={`${API_URL}/${item}`} alt={name} />
                 </SwiperSlide>
@@ -75,7 +75,7 @@ export const Card = () => {
           </div>
         </div>
         <div className={s.info}>
-          <p className={s.price}>{price.toLocaleString()}&nbsp;₽</p>
+          <p className={s.price}>{price?.toLocaleString()}&nbsp;₽</p>
           <p className={s.article}>{article}</p>
           <div className={s.characteristics}>
             <h3>Общие характеристики</h3>
