@@ -14,10 +14,18 @@ export const Catalog = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div>Загрузка...</div>;
+    return (
+      <Container className={s.container}>
+        <div>Загрузка...</div>
+      </Container>
+    );
   }
   if (error) {
-    return <div>Ошибка: {error}</div>;
+    return (
+      <Container className={s.container}>
+        <div>Ошибка: {error}</div>
+      </Container>
+    );
   }
 
   return (

@@ -26,11 +26,29 @@ const router = createBrowserRouter([
   },
   {
     path: "/category",
-    element: <></>,
+    element: (
+      <>
+        <Header />
+        <main>
+          <Catalog />
+          <Goods />
+        </main>
+        <Footer />
+      </>
+    ),
   },
   {
     path: "/favorite",
-    element: <></>,
+    element: (
+      <>
+        <Header />
+        <main>
+          <Catalog />
+          <Goods />
+        </main>
+        <Footer />
+      </>
+    ),
   },
   {
     path: "/cart",
@@ -38,7 +56,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/search",
-    element: <></>,
+    element: (
+      <>
+        <Header />
+        <main>
+          <Catalog />
+          <Goods />
+        </main>
+        <Footer />
+      </>
+    ),
   },
   {
     path: "/404",
@@ -80,7 +107,11 @@ const App = () => {
   }, [dispatch, accessToken]);
 
   if (loading) {
-    return <div>Загрузка...</div>;
+    return (
+      <Container>
+        <div>Загрузка...</div>
+      </Container>
+    );
   }
 
   return <RouterProvider router={router} />;
