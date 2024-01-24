@@ -47,7 +47,7 @@ export const Card = () => {
         <Slider data={data} />
         <div className={s.info}>
           <p className={s.price}>{data?.price?.toLocaleString()}&nbsp;₽</p>
-          <p className={s.article}>{data?.article}</p>
+          <p className={s.article}>арт. {data?.article}</p>
 
           <div className={s.characteristics}>
             <h3 className={s.characteristicsTitle}>Общие характеристики</h3>

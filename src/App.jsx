@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Catalog } from "./views/Catalog/Catalog";
 import { Card } from "./components/Card/Card";
 import { Container } from "./views/Container/Container";
+import { Cart } from "./views/Cart/Cart";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/cart",
-    element: <></>,
+    element: (
+      <>
+        <Header />
+        <main>
+          <Cart />
+        </main>
+        <Footer />
+      </>
+    ),
   },
   {
     path: "/search",
@@ -68,7 +77,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/404",
+    path: "*",
     element: (
       <>
         <Header />
