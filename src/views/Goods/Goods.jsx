@@ -25,7 +25,7 @@ export const Goods = () => {
 
   useEffect(() => {
     dispatch(fetchProducts(fetchParams));
-  }, [dispatch, favoriteList, category, q]);
+  }, [dispatch, favoriteList, category, q, pathname]);
 
   if (loading) {
     return (
