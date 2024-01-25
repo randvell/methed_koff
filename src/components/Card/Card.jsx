@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "../../store/product/product.slice";
 import { Slider } from "../Slider/Slider";
 import { FavoriteButton } from "../FavoriteButton/FavoriteButton";
+import { AddToCartButton } from "../AddToCartButton/AddToCartButton";
 
 export const Card = () => {
   const { productId } = useParams();
@@ -64,7 +65,7 @@ export const Card = () => {
           </div>
 
           <div className={s.btns}>
-            <button className={s.btn}>В корзину</button>
+            <AddToCartButton className={s.btn} id={data.id} />
             <FavoriteButton className={s.like} id={data.id} />
           </div>
         </div>

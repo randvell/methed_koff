@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../../const";
+import { useDispatch } from "react-redux";
 
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
@@ -33,7 +34,7 @@ export const fetchCart = createAsyncThunk(
 );
 
 export const addProductToCart = createAsyncThunk(
-  "cart/fetchCart",
+  "cart/addProductToCart",
   async (productData, { getState, rejectWithValue }) => {
     const state = getState();
     const token = state.auth.accessToken;
@@ -67,20 +68,18 @@ export const addProductToCart = createAsyncThunk(
 );
 
 export const removeProductFromCart = createAsyncThunk(
-  "cart/fetchCart",
-  async (productData, { getState, rejectWithValue }) => {
+  "cart/removeProductFromCart",
+  async (id, { getState, rejectWithValue }) => {
     const state = getState();
     const token = state.auth.accessToken;
 
     try {
-      const response = await fetch(
-        `${API_URL}/api/cart/products/${productData.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/api/cart/products/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -115,7 +114,58 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCart.pending, (state) => {
+        state.loadingFetch = true;
+        state.error = null;
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loadingFetch = false;
+        state.error = null;
+        state.products = action.payload.products;
+        state.totalCount = action.payload.totalCount;
+        state.totalPrice = action.payload.totalPrice;
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.loadingFetch = false;
+        state.error = action.error.message;
+      });
+
+    builder
+      .addCase(addProductToCart.pending, (state) => {
+        state.loadingAdd = true;
+        state.error = null;
+      })
+      .addCase(addProductToCart.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loadingAdd = false;
+        state.error = null;
+
+        // Это не работает :(
+        const dispatch = useDispatch();
+        dispatch(fetchCart());
+        // const newProduct = state.product;
+        // const existingProduct = state.products.find(
+        //   (product) => product.id === newProduct.id,
+        // );
+
+        // const newProductQuantity = 1;
+        // newProduct.quantity = newProductQuantity;
+        // if (existingProduct) {
+        //   // todo: как-то доставать число динамически
+        //   existingProduct.quantity += newProductQuantity;
+        // } else {
+        //   state.products.push(newProduct);
+        //   state.totalCount += 1;
+        // }
+      })
+      .addCase(addProductToCart.rejected, (state, action) => {
+        state.loadingAdd = false;
+        state.error = action.error.message;
+      });
+  },
 });
 
 export default cartSlice.reducer;
