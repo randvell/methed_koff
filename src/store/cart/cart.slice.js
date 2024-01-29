@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../../const";
-import { useDispatch } from "react-redux";
 
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
@@ -67,6 +66,40 @@ export const addProductToCart = createAsyncThunk(
   },
 );
 
+export const updateProductToCart = createAsyncThunk(
+  "cart/updateProductToCart",
+  async (productData, { getState, rejectWithValue }) => {
+    const state = getState();
+    const token = state.auth.accessToken;
+
+    try {
+      const response = await fetch(`${API_URL}/api/cart/products`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(productData),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          return rejectWithValue({
+            status: response.status,
+            error: "Не обновить товар в корзине",
+          });
+        }
+
+        throw new Error("Не обновить товар в корзине");
+      }
+
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
 export const removeProductFromCart = createAsyncThunk(
   "cart/removeProductFromCart",
   async (id, { getState, rejectWithValue }) => {
@@ -85,11 +118,11 @@ export const removeProductFromCart = createAsyncThunk(
         if (response.status === 401) {
           return rejectWithValue({
             status: response.status,
-            error: "Не удалось получить каталог!",
+            error: "Не удалось удалить товар из корзины",
           });
         }
 
-        throw new Error("Не удалось загрузить содержимое корзины");
+        throw new Error("Не удалось удалить товар из корзины");
       }
 
       return await response.json();
@@ -115,6 +148,13 @@ const cartSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    const updateCartTotals = (state) => {
+      state.totalPrice = state.products.reduce(
+        (acc, item) => item.price * item.quantity + acc,
+        0,
+      );
+    };
+
     builder
       .addCase(fetchCart.pending, (state) => {
         state.loadingFetch = true;
@@ -143,26 +183,68 @@ const cartSlice = createSlice({
         state.loadingAdd = false;
         state.error = null;
 
-        // Это не работает :(
-        const dispatch = useDispatch();
-        dispatch(fetchCart());
-        // const newProduct = state.product;
-        // const existingProduct = state.products.find(
-        //   (product) => product.id === newProduct.id,
-        // );
+        const newProduct = action.payload.product;
+        if (newProduct) {
+          newProduct.quantity = 1;
+          state.products.push(newProduct);
+          state.totalCount += 1;
+        } else {
+          const addedProductId = action.payload.productCart?.productId;
+          if (addedProductId) {
+            const existingProduct = state.products.find(
+              (product) => product.id === addedProductId,
+            );
 
-        // const newProductQuantity = 1;
-        // newProduct.quantity = newProductQuantity;
-        // if (existingProduct) {
-        //   // todo: как-то доставать число динамически
-        //   existingProduct.quantity += newProductQuantity;
-        // } else {
-        //   state.products.push(newProduct);
-        //   state.totalCount += 1;
-        // }
+            if (existingProduct) {
+              existingProduct.quantity = action.payload.productCart?.quantity;
+            }
+          }
+        }
+
+        updateCartTotals(state);
       })
       .addCase(addProductToCart.rejected, (state, action) => {
         state.loadingAdd = false;
+        state.error = action.error.message;
+      });
+
+    builder
+      .addCase(updateProductToCart.pending, (state, action) => {
+        state.loadingUpdate = true;
+      })
+      .addCase(updateProductToCart.fulfilled, (state, action) => {
+        state.loadingUpdate = false;
+        const addedProductId = action.payload.productCart?.productId;
+        if (addedProductId) {
+          const existingProduct = state.products.find(
+            (product) => product.id === addedProductId,
+          );
+
+          if (existingProduct) {
+            existingProduct.quantity = action.payload.productCart?.quantity;
+          }
+        }
+        updateCartTotals(state);
+      })
+      .addCase(updateProductToCart.rejected, (state, action) => {
+        state.loadingUpdate = false;
+        state.error = action.error.message;
+      });
+
+    builder
+      .addCase(removeProductFromCart.pending, (state, action) => {
+        state.loadingRemove = true;
+      })
+      .addCase(removeProductFromCart.fulfilled, (state, action) => {
+        state.loadingRemove = false;
+        state.products = state.products.filter(
+          (item) => item.id !== action.payload.id,
+        );
+        state.totalCount = action.payload.totalCount;
+        updateCartTotals(state);
+      })
+      .addCase(removeProductFromCart.rejected, (state, action) => {
+        state.loadingRemove = false;
         state.error = action.error.message;
       });
   },
