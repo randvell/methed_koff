@@ -146,7 +146,18 @@ const initialState = {
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    clearCart: (state) => {
+      state.products = [];
+      state.totalPrice = 0;
+      state.totalCount = 0;
+      state.loadingFetch = false;
+      state.loadingAdd = false;
+      state.loadingUpdate = false;
+      state.loadingRemove = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     const updateCartTotals = (state) => {
       state.totalPrice = state.products.reduce(
@@ -251,3 +262,4 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
+export const { clearCart } = cartSlice.actions;

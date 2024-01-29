@@ -16,7 +16,10 @@ export const submitCartFrom = createAsyncThunk(
 
     const response = await fetch(`${API_URL}/api/orders`, {
       method: "POST",
-      headers: { Authorization: "Bearer " + token },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
       body: JSON.stringify(formData),
     });
 
@@ -42,7 +45,7 @@ const formCartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(submitCartFrom.pending, (state, action) => {
+      .addCase(submitCartFrom.pending, (state) => {
         state.loading = true;
         state.error = null;
         state.success = false;
@@ -51,6 +54,7 @@ const formCartSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.success = true;
+        state.orderId = action.payload;
       })
       .addCase(submitCartFrom.rejected, (state, action) => {
         state.loading = false;

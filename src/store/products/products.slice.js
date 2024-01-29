@@ -7,7 +7,6 @@ export const fetchProducts = createAsyncThunk(
     const state = thunkApi.getState();
     const token = state.auth.accessToken;
 
-    console.log(param);
     const queryParams = new URLSearchParams();
     if (param) {
       for (const key in param) {

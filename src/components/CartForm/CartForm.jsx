@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { submitCartFrom } from "../../store/formCart/formCartSlice";
+import { clearCart } from "../../store/cart/cart.slice";
 
 export const CartForm = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export const CartForm = () => {
 
   useEffect(() => {
     if (orderStatus.success) {
+      dispatch(clearCart());
       navigate(`/order/${orderStatus.orderId}`);
     }
   }, [orderStatus, navigate]);
@@ -97,9 +99,11 @@ export const CartForm = () => {
             {...register("deliveryType", { required: true })}
           />
           Самовывоз
+          {errors.deliveryType && (
+            <p className={s.error}>Выберите тип доставки</p>
+          )}
         </label>
       </fieldset>
-      {errors.deliveryType && <p className={s.error}>Выберите тип доставки</p>}
 
       <fieldset className={s.fieldsetRadio}>
         <legend className={s.legend}>Оплата</legend>
@@ -120,10 +124,10 @@ export const CartForm = () => {
             {...register("paymentType", { required: true })}
           />
           Наличными при получении
+          {errors.paymentType && (
+            <p className={s.error}>Выберите способ оплаты</p>
+          )}
         </label>
-        {errors.paymentType && (
-          <p className={s.error}>Выберите способ оплаты</p>
-        )}
       </fieldset>
     </form>
   );
